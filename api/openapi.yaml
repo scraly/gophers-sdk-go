@@ -4,7 +4,7 @@ info:
   title: gophers-api
   version: 0.1.0
 servers:
-- url: /
+- url: http://localhost:8080/
 tags:
 - description: Handle Gophers
   name: gophers
