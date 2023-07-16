@@ -1,0 +1,29 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: "Install AWK"
+        run: sudo apt-get update && sudo apt-get -y install gawk && awk --version
+      - name: Extract first Changelog entry
+        run: cat CHANGELOG.md | awk '/^##/{block++} {if (block==1) {print}}' > CHANGELOG.txt
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.txt
+          draft: false
+          name: ${{ github.ref_name }}
+        env:
+          GITHUB_REPOSITORY: scraly/gophers-sdk-go
+      - name: Force quicker pkg.go.dev indexing
+        run: curl 'https://proxy.golang.org/github.com/scraly/gophers-sdk-go/@v/${{ github.ref_name }}.info'
