@@ -13,3 +13,10 @@ jobs:
         run: brew install openapi-generator
       - name: Check OpenAPI Generator
         run: openapi-generator version
+
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+          
+      - run: echo "${{ steps.get-latest-tag.outputs.tag }}"
+        
+  
