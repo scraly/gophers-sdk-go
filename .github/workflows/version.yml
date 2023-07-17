@@ -1,16 +1,14 @@
-name: Test
+name: Version
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  version:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Run a one-line script
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/} \
-          echo $VERSION
+        run: echo ${GITHUB_REF#refs/tags/}
