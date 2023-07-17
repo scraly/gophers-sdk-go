@@ -10,5 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run a one-line script
-        run: echo ${GITHUB_REF#refs/tags/}
+      - name: Get latest tag
+        run: git describe --tags
