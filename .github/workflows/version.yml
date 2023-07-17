@@ -8,7 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 50
+          
+      - run: TAG=$(git ls-remote remote "refs/tags/v*[0-9]" | cut -f 2- | sort -V | tail -1)
 
       - name: Get latest tag
         run: |
