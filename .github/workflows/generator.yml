@@ -2,7 +2,7 @@ name: gopherssdkgo
 on: [repository_dispatch]
 jobs:
   generator:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - run: echo "Triggering gophers-sdk-go"
       
@@ -14,9 +14,6 @@ jobs:
       - name: Check OpenAPI Generator
         run: openapi-generator version
 
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-          
-      - run: echo "${{ steps.get-latest-tag.outputs.tag }}"
+      - run: echo "${GITHUB_REF##*/}"
         
   
