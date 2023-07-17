@@ -12,16 +12,11 @@ jobs:
         with:
           fetch-depth: 50
           
-      - name: Get latest tag
+      - name: Get latest tag and increment it
         run: |
           git fetch -a
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo $latest_tag
-          
-      - name: Increment latest git tag
-        run: |
-          #get highest tag number
-          VERSION=`git describe --abbrev=0 --tags`
+          VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo $VERSION
 
           #get number parts and increase last one by 1
           VNUM1=$(echo "$VERSION" | cut -d"." -f1)
