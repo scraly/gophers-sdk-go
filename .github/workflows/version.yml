@@ -12,10 +12,41 @@ jobs:
         with:
           fetch-depth: 50
           
-      - run: TAG=$(git ls-remote remote "refs/tags/v*[0-9]" | cut -f 2- | sort -V | tail -1)
-
       - name: Get latest tag
         run: |
           git fetch -a
           latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo $latest_tag
+          
+      - name: Increment latest git tag
+        run: |
+          #get highest tag number
+          VERSION=`git describe --abbrev=0 --tags`
+
+          #get number parts and increase last one by 1
+          VNUM1=$(echo "$VERSION" | cut -d"." -f1)
+          VNUM2=$(echo "$VERSION" | cut -d"." -f2)
+          VNUM3=$(echo "$VERSION" | cut -d"." -f3)
+          VNUM1=`echo $VNUM1 | sed 's/v//'`
+
+          # Check for #major or #minor in commit message and increment the relevant version number
+          MAJOR=`git log --format=%B -n 1 HEAD | grep '#major'`
+          MINOR=`git log --format=%B -n 1 HEAD | grep '#minor'`
+
+          if [ "$MAJOR" ]; then
+            echo "Update major version"
+            VNUM1=$((VNUM1+1))
+            VNUM2=0
+            VNUM3=0
+          elif [ "$MINOR" ]; then
+            echo "Update minor version"
+            VNUM2=$((VNUM2+1))
+            VNUM3=0
+          else
+            echo "Update patch version"
+            VNUM3=$((VNUM3+1))
+          fi
+
+          #create new tag
+          NEW_TAG="v$VNUM1.$VNUM2.$VNUM3"
+          echo $NEW_TAG
