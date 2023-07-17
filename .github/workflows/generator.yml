@@ -2,7 +2,7 @@ name: gopherssdkgo
 on: [repository_dispatch]
 jobs:
   generator:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - run: echo "Triggering gophers-sdk-go"
       
