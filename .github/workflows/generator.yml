@@ -1,0 +1,12 @@
+name: gopherssdkgo
+on: [repository_dispatch]
+jobs:
+  generator:
+    runs-on: macos-latest
+    steps:
+      - run: echo "Triggering gophers-sdk-go"
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check OpenAPI Generator
+        run: openapi-generator version
